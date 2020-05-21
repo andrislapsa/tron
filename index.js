@@ -1,4 +1,4 @@
-import { Car, BLOCK_SIZE } from './Car.js'
+import { Car, BLOCK_SIZE, MOVEMENT_SIZE } from './Car.js'
 
 const FPS = 60
 const WASD_FOR_FIRST_PLAYER = true
@@ -71,7 +71,7 @@ function update(ts) {
 
   players.forEach((player, playerIndex) => {
     if (gameOver) {
-      console.log('game over')
+      // console.log('game over')
       return
     }
 
@@ -80,7 +80,7 @@ function update(ts) {
 
     const otherPlayerIndex = playerIndex === 0 ? 1 : 0
     const collidedWithOtherPlayers = otherPlayers.find((otherPlayer, idx) => {
-      return otherPlayer.collides(player.x, player.y)
+      return otherPlayer.collides(player.x, player.y, true)
     })
 
     // console.log('player', { player, otherPlayers })
@@ -91,7 +91,7 @@ function update(ts) {
       if (collidedWithSelf) updateScore(otherPlayerIndex, 1)
       if (collidedWithOtherPlayers) updateScore(playerIndex, 1)
       // debugger
-      console.log('uh oh!!!')
+      // console.log('uh oh!!!')
       gameOver = true
       gameoverEl.classList.add('visible')
       var audio = new Audio('./gameover.m4a');
@@ -146,7 +146,7 @@ function render(ts) {
       //   x -= 2
       // }
 
-      ctx.arc(x, y, blockWidth - 4, 0, 2 * Math.PI)
+      ctx.arc(x, y, 10, 0, 2 * Math.PI)
       ctx.fill()
       ctx.closePath()
 
@@ -171,13 +171,26 @@ function frame() {
 let players = []
 let gameoverEl
 
+function getCanvasSize() {
+  const PADDING = 200
+
+  let width = window.innerWidth - PADDING
+  let height = window.innerHeight - PADDING / 2
+
+  // MOVEMENT_SIZE
+  width -= width % MOVEMENT_SIZE
+  height -= height % MOVEMENT_SIZE
+
+  return { width, height }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.querySelector('canvas')
   gameoverEl = document.querySelector('#gameover')
-  const PADDING = 200
 
-  // canvas.width = 800 // window.innerWidth - PADDING
-  // canvas.height = 800 // window.innerHeight - PADDING
+  const canvasSize = getCanvasSize()
+  canvas.width = canvasSize.width
+  canvas.height = canvasSize.height
   const ctx = canvas.getContext('2d')
   const WIDTH = canvas.width
   const HEIGHT = canvas.height

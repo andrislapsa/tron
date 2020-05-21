@@ -1,5 +1,5 @@
 export const BLOCK_SIZE = 20
-export const MOVEMENT_SIZE = 8
+export const MOVEMENT_SIZE = 4
 const BOUNDARY_PADDING = MOVEMENT_SIZE - 4
 
 const movementMatrix = {
@@ -83,9 +83,15 @@ export class Car {
   //   return trail.find(({ x, y }) => this.collides(x, y))
   // }
 
-  collides(x, y) {
+  collides(x, y, addEndTrail = false) {
+    const trail = addEndTrail ? [...this.trail, {
+      x: this.x,
+      y: this.y,
+      direction: this.direction,
+      color: this.color,
+    }] : this.trail
     let previousPosition = this.startingPosition
-    return this.trail.find((position, index) => {
+    return trail.find((position, index) => {
       let collides = false
       // if (index === this.trail.length - 1) {
       //   return
