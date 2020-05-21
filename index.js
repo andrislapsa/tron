@@ -89,7 +89,7 @@ function update(ts) {
     if (collidedWithSelf || collidedWithOtherPlayers) {
       // debugger
       if (collidedWithSelf) updateScore(otherPlayerIndex, 1)
-      if (collidedWithOtherPlayers) updateScore(playerIndex, 1)
+      if (collidedWithOtherPlayers) updateScore(otherPlayerIndex, 1)
       // debugger
       // console.log('uh oh!!!')
       gameOver = true
