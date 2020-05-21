@@ -57,14 +57,29 @@
         30px 30px;
   	}
 
+    #gameover,
     #score > div {
       padding: 15px 30px;
       background: rgba(200, 200, 200, .3);
+    }
+
+    #gameover {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 20%;
+      color: white;
+      display: none;
+    }
+
+    #gameover.visible {
+      display: block;
     }
   </style>
 </head>
 <body>
   <div id="game">
+    <div id="gameover">Press "R" to start a new game</div>
     <div id="score">
       <div class="blue">0</div>
       <div class="red">0</div>

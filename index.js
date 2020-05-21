@@ -42,6 +42,7 @@ function updateScore(playerIndex, score) {
 
 const getNewPlayers = ({ WIDTH, HEIGHT }) => {
   gameOver = false
+  gameoverEl.classList.remove('visible')
   const STARTING_X_OFFSET = 40
 
   return [
@@ -92,6 +93,7 @@ function update(ts) {
       // debugger
       console.log('uh oh!!!')
       gameOver = true
+      gameoverEl.classList.add('visible')
       var audio = new Audio('./gameover.m4a');
       audio.play();
     } else {
@@ -167,9 +169,11 @@ function frame() {
 }
 
 let players = []
+let gameoverEl
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.querySelector('canvas')
+  gameoverEl = document.querySelector('#gameover')
   const PADDING = 200
 
   // canvas.width = 800 // window.innerWidth - PADDING
