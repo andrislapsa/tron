@@ -3,17 +3,11 @@ import { Car, BLOCK_SIZE, MOVEMENT_SIZE } from './Car.js'
 const FPS = 60
 const WASD_FOR_FIRST_PLAYER = true
 
-// alert(FPS)
-
 const timestamp = () => performance.now()
-var now,
+let now,
     dt   = 0,
     last = timestamp(),
     step = 1 / FPS
-
-const blocksToRender = []
-const directionsQueue = []
-
 
 const controlsMapping = {
   arrowup: { direction: 'up', playerIndex: WASD_FOR_FIRST_PLAYER ? 1 : 0 },
@@ -65,95 +59,66 @@ const getNewPlayers = ({ WIDTH, HEIGHT }) => {
   ]
 }
 
+const getOtherPlayers = (playerIndex) =>
+  players.filter((_, index) => index !== playerIndex)
+
+function endGame() {
+  gameOver = true
+  gameoverEl.classList.add('visible')
+
+  const audio = new Audio('./gameover.m4a')
+  audio.play()
+}
+
 function update(ts) {
-  // console.log('update called', ts)
   if (paused) return
 
   players.forEach((player, playerIndex) => {
     if (gameOver) {
-      // console.log('game over')
       return
     }
 
     const newBlock = player.move()
-    const otherPlayers = players.filter((_, index) => index !== playerIndex)
+    const otherPlayers = getOtherPlayers(playerIndex)
 
     const otherPlayerIndex = playerIndex === 0 ? 1 : 0
     const collidedWithOtherPlayers = otherPlayers.find((otherPlayer, idx) => {
       return otherPlayer.collides(player.x, player.y, true)
     })
 
-    // console.log('player', { player, otherPlayers })
+    if (collidedWithOtherPlayers) {
+      updateScore(otherPlayerIndex, 1)
+      endGame()
+    }
 
-    const collidedWithSelf = player.collidesWithSelf()
-    if (collidedWithSelf || collidedWithOtherPlayers) {
-      // debugger
-      if (collidedWithSelf) updateScore(otherPlayerIndex, 1)
-      if (collidedWithOtherPlayers) updateScore(otherPlayerIndex, 1)
-      // debugger
-      // console.log('uh oh!!!')
-      gameOver = true
-      gameoverEl.classList.add('visible')
-      var audio = new Audio('./gameover.m4a');
-      audio.play();
-    } else {
-      blocksToRender.push(newBlock)
+    if (player.crashed) {
+      updateScore(otherPlayerIndex, 1)
+      endGame()      
     }
   })
-
-  // console.log('blocksToRenxder', [...blocksToRender])
 }
 
 function render(ts) {
-  // console.log('render called', ts)
   let block
   players.forEach((player) => {
     const blocksToRender = player.blocksToRender
 
     while ((block = blocksToRender.pop())) {
       let { x, y, color } = block
-      // if (color === 'red')
-      // console.log('rendering block', {...block})
 
       ctx.beginPath()
-      ctx.fillStyle = color === 'blue' ? 'rgba(0, 0, 255, .5)' : 'rgba(255, 0, 0, .3)'
+      ctx.fillStyle = color === 'blue' ?
+        'rgba(0, 0, 255, .5)' :
+        'rgba(255, 0, 0, .3)'
 
       let blockWidth = BLOCK_SIZE - 2
       let blockHeight = BLOCK_SIZE - 2
 
-      // if (block.direction === 'right' || block.direction === 'left') {
-      //   blockWidth += 2
-      // }
-
-      // if (block.direction === 'up' || block.direction === 'down') {
-      //   blockHeight += 2
-      // }
-
-      // if (block.direction === 'up') {
-      //   x += 2
-      // }
-
-      // if (block.direction === 'left') {
-      //   x += 2
-      // }
-
-      // if (block.direction === 'down') {
-      //   x += 2
-      //   y -= 2
-      // }
-
-      // if (block.direction === 'right') {
-      //   x -= 2
-      // }
-
       ctx.arc(x, y, 10, 0, 2 * Math.PI)
       ctx.fill()
       ctx.closePath()
-
-      // ctx.fillRect(x, y, blockWidth, blockHeight)
     }
   })
-
 }
 
 function frame() {
@@ -177,7 +142,6 @@ function getCanvasSize() {
   let width = window.innerWidth - PADDING
   let height = window.innerHeight - PADDING / 2
 
-  // MOVEMENT_SIZE
   width -= width % MOVEMENT_SIZE
   height -= height % MOVEMENT_SIZE
 
@@ -201,16 +165,15 @@ document.addEventListener('DOMContentLoaded', () => {
   requestAnimationFrame(frame)
 
   window.addEventListener('keydown', ({ key }) => {
-    // console.log('keydown', control)
-
     const control = controlsMapping[key.toLowerCase()]
 
     if (control && !gameOver) {
       const { direction, playerIndex } = control
       const player = players[playerIndex]
+      const otherPlayers = getOtherPlayers(playerIndex)
 
       if (player.direction === direction) {
-        player.turbo()
+        player.turbo(otherPlayers)
       }
 
       player.changeDirection(direction)

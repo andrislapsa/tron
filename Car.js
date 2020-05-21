@@ -1,5 +1,5 @@
 export const BLOCK_SIZE = 20
-export const MOVEMENT_SIZE = 4
+export const MOVEMENT_SIZE = 5
 const BOUNDARY_PADDING = MOVEMENT_SIZE - 4
 
 const movementMatrix = {
@@ -19,6 +19,7 @@ export class Car {
   WIDTH = 0
   HEIGHT = 0
   blocksToRender = []
+  crashed = false
 
   isInTurbo = false
 
@@ -144,7 +145,7 @@ export class Car {
     })
   }
 
-  turbo() {    
+  turbo(otherPlayers) {    
     if (this.isInTurbo) return
 
     let n = 15
@@ -160,6 +161,16 @@ export class Car {
         this.isInTurbo = false
       }
       const newBlock = this.move()
+
+      const collidedWithOtherPlayers = otherPlayers.find((otherPlayer, idx) => {
+        return otherPlayer.collides(this.x, this.y, true)
+      })
+
+      if (collidedWithOtherPlayers) {
+        this.crashed = true
+        clearInterval(a)
+      }
+
       this.blocksToRender.push(newBlock)
     }, 10)
   }
@@ -179,6 +190,10 @@ export class Car {
 
     this.x += x * MOVEMENT_SIZE
     this.y += y * MOVEMENT_SIZE
+
+    if (this.collidesWithSelf()) {
+      this.crashed = true
+    }
 
     const newPosition = {
       x: this.x,
