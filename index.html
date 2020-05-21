@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tron</title>
+  <!-- <link rel="stylesheet" href="/index.css"> -->
+  <style type="text/css">
+    html, body {
+    background:
+      linear-gradient(-90deg, rgba(200, 200, 200, .05), 4px, transparent 4px),
+      linear-gradient(rgba(200, 200, 200, .05), 4px, transparent 4px),
+      #333;
+    background-size:
+      90px 90px,
+      90px 90px;
+      margin: 0;
+      text-align: center;
+      font-family: Arial;
+      font-size: 48px;
+    }
+
+    #game {
+      position: relative;
+    }
+
+    #score {
+      position: absolute;
+      top: 0;
+      left: 20px;
+      right: 20px;
+      padding: 20px;
+      font-weight: bold;
+    }
+
+    #score .blue {
+      position: absolute;
+      left: 0;
+      color: blue;
+    }
+
+    #score .red {
+      position: absolute;
+      right: 0;
+      color: red;
+    }
+
+  	canvas {
+      margin-top: 10px;
+      border: 1px solid #0f0;
+      background:
+        linear-gradient(-90deg, rgba(200, 200, 200, .05), 2px, transparent 2px),
+        linear-gradient(rgba(200, 200, 200, .05), 2px, transparent 2px),
+        #222;
+    background-size:
+        30px 30px,
+        30px 30px;
+  	}
+
+    #score > div {
+      padding: 15px 30px;
+      background: rgba(200, 200, 200, .3);
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <div id="score">
+      <div class="blue">0</div>
+      <div class="red">0</div>
+    </div>
+    <canvas width="1600" height="1200" />
+    <!-- <canvas width="800" height="600" /> -->
+    <!-- <canvas width="6400" height="4800" /> -->
+  </div>
+  <script type="module" src="/index.js"></script>
+</body>
+</html>
