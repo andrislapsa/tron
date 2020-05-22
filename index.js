@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('keydown', ({ key }) => {
     const control = controlsMapping[key.toLowerCase()]
 
-    if (control && !gameOver) {
+    if (control && !gameOver && !paused) {
       const { direction, playerIndex } = control
       const player = players[playerIndex]
       const otherPlayers = getOtherPlayers(playerIndex)
@@ -190,7 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
         break
 
       case 'p' :
+        if (gameOver) return
         paused = !paused
+        canvas.classList.toggle('paused')
         break
     }
   })
