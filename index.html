@@ -7,17 +7,18 @@
   <!-- <link rel="stylesheet" href="/index.css"> -->
   <style type="text/css">
     html, body {
-    background:
-      linear-gradient(-90deg, rgba(200, 200, 200, .05), 4px, transparent 4px),
-      linear-gradient(rgba(200, 200, 200, .05), 4px, transparent 4px),
-      #333;
-    background-size:
-      90px 90px,
-      90px 90px;
-      margin: 0;
-      text-align: center;
-      font-family: Arial;
-      font-size: 48px;
+      background:
+        linear-gradient(-90deg, rgba(200, 200, 200, .05), 4px, transparent 4px),
+        linear-gradient(rgba(200, 200, 200, .05), 4px, transparent 4px),
+        #333;
+      background-size:
+        90px 90px,
+        90px 90px;
+        margin: 0;
+        text-align: center;
+        font-family: Arial;
+        font-size: 48px;
+      background-position: center;
     }
 
     #game {
@@ -46,23 +47,26 @@
     }
 
   	canvas {
-      margin-top: 10px;
+      margin-top: 50px;
       border: 1px solid #0f0;
       background:
         linear-gradient(-90deg, rgba(200, 200, 200, .05), 2px, transparent 2px),
         linear-gradient(rgba(200, 200, 200, .05), 2px, transparent 2px),
         #222;
-    background-size:
+      background-size:
         30px 30px,
         30px 30px;
+      background-position: center;
   	}
 
+    #intro,
     #gameover,
     #score > div {
       padding: 15px 30px;
       background: rgba(200, 200, 200, .3);
     }
 
+    #intro,
     #gameover {
       position: absolute;
       left: 0;
@@ -72,13 +76,78 @@
       display: none;
     }
 
+    #intro.visible,
     #gameover.visible {
       display: block;
+    }
+
+    .player-instructions {
+      display: flex;
+      flex-direction: row;
+      font-size: 32px;
+      margin: 20px 0;
+    }
+
+    .player-instructions .player {
+      flex: 0.5;
+    }
+
+    .player-instructions .player .controls {
+      margin-top: 10px;
+    }
+
+    .player-instructions .player .controls span:first-child {
+      margin: 0 auto;
+    }
+
+    .player-instructions .player .controls span {
+      border: 1px solid;
+      display: inline-block;
+      width: 54px;
+      height: 54px;
+      line-height: 54px;
+      margin-top: 10px;
+    }
+
+    .player.red .name {
+      color: red;
+    }
+
+    .player.blue .name {
+      color: blue;
     }
   </style>
 </head>
 <body>
   <div id="game">
+    <div id="intro" class="visible">
+      Avoid crashing into the walls and into your opponent
+      <div class="player-instructions">
+        <div class="player blue">
+          <span class="name">Blue</span> player controls
+          <div class="controls">
+            <span>W</span>
+            <div>
+              <span>A</span>
+              <span>S</span>
+              <span>D</span>
+            </div>
+          </div>
+        </div>
+        <div class="player red">
+          <span class="name">Red</span> player controls
+          <div class="controls">
+            <span>&uarr;</span>
+            <div>
+              <span>&larr;</span>
+              <span>&darr;</span>
+              <span>&rarr;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      Press "R" to start. Press "P" for pause & unpause.
+    </div>
     <div id="gameover">Press "R" to start a new game</div>
     <div id="score">
       <div class="blue">0</div>

@@ -20,7 +20,7 @@ const controlsMapping = {
   d: { direction: 'right', playerIndex: WASD_FOR_FIRST_PLAYER ? 0 : 1 },
 }
 
-let gameOver = false
+let gameOver = true
 let paused = false
 
 const scores = [
@@ -37,6 +37,7 @@ function updateScore(playerIndex, score) {
 const getNewPlayers = ({ WIDTH, HEIGHT }) => {
   gameOver = false
   gameoverEl.classList.remove('visible')
+  introEl.classList.remove('visible')
   const STARTING_X_OFFSET = 40
 
   return [
@@ -135,6 +136,7 @@ function frame() {
 
 let players = []
 let gameoverEl
+let introEl
 
 function getCanvasSize() {
   const PADDING = 200
@@ -151,6 +153,7 @@ function getCanvasSize() {
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.querySelector('canvas')
   gameoverEl = document.querySelector('#gameover')
+  introEl = document.querySelector('#intro')
 
   const canvasSize = getCanvasSize()
   canvas.width = canvasSize.width
@@ -160,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const HEIGHT = canvas.height
   window.ctx = ctx
 
-  players = getNewPlayers({ WIDTH, HEIGHT })
+  // players = getNewPlayers({ WIDTH, HEIGHT })
   window._players = players
   requestAnimationFrame(frame)
 
