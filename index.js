@@ -32,6 +32,7 @@ function updateScore(playerIndex, score) {
   const newScore = playerScore.score + score
   playerScore.el.innerHTML = newScore
   playerScore.score = newScore
+  gameoverEl.className = players[playerIndex].color
 }
 
 const getNewPlayers = ({ WIDTH, HEIGHT }) => {
@@ -163,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const HEIGHT = canvas.height
   window.ctx = ctx
 
-  // players = getNewPlayers({ WIDTH, HEIGHT })
   window._players = players
   requestAnimationFrame(frame)
 
