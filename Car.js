@@ -1,4 +1,3 @@
-export const BLOCK_SIZE = 20
 export const MOVEMENT_SIZE = 5
 const BOUNDARY_PADDING = MOVEMENT_SIZE - 4
 
@@ -20,6 +19,7 @@ export class Car {
   HEIGHT = 0
   blocksToRender = []
   crashed = false
+  turbosLeft = 3
 
   isInTurbo = false
 
@@ -146,12 +146,14 @@ export class Car {
   }
 
   turbo(otherPlayers) {    
-    if (this.isInTurbo) return
+    if (this.isInTurbo || this.turbosLeft === 0) return
+
+    this.turbosLeft--;
 
     let n = 15
     this.isInTurbo = true
 
-    var audio = new Audio('./turbo.m4a');
+    var audio = new Audio(`./turbo_${this.color}.m4a`);
     audio.play();
 
     const a = setInterval(() => {

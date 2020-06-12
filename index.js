@@ -1,4 +1,4 @@
-import { Car, BLOCK_SIZE, MOVEMENT_SIZE } from './Car.js'
+import { Car, MOVEMENT_SIZE } from './Car.js'
 
 const FPS = 60
 const WASD_FOR_FIRST_PLAYER = true
@@ -112,9 +112,6 @@ function render(ts) {
       ctx.fillStyle = color === 'blue' ?
         'rgba(0, 0, 255, .5)' :
         'rgba(255, 0, 0, .3)'
-
-      let blockWidth = BLOCK_SIZE - 2
-      let blockHeight = BLOCK_SIZE - 2
 
       ctx.arc(x, y, 10, 0, 2 * Math.PI)
       ctx.fill()
